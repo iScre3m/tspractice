@@ -11,5 +11,5 @@ const universitySchema = new Schema<IUniversity>({
     address: {type: String, required:true},
     coursesOffered: [{type: Schema.Types.ObjectId, ref: 'Courses'}]
 })
-
-export default mongoose.model<IUniversity>('University', universitySchema )
+const University = mongoose.model<IUniversity>('University', universitySchema )
+export default University
