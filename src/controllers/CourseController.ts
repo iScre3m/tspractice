@@ -2,16 +2,16 @@ import { Request, Response} from 'express'
 import Course from '../entities/Course'
 
 class CourseController{
-    async getAllCourses(req: Request, res: Response){
+    static async getAllCourses(req: Request, res: Response){
         try{
-            const courses = await Course.find()
+            const courses = await Course.find().populate('professor').populate('students')
             res.json(courses)
         }catch(error){
             console.log(error)
         }
     }
 
-    async getCourseById(req: Request, res: Response){
+    static async getCourseById(req: Request, res: Response){
         const courseId = req.params.id
         try{
             const course = await Course.findById(courseId).populate('professor').populate('students')
@@ -24,7 +24,7 @@ class CourseController{
         }
     }
 
-    async createCourse(req: Request, res: Response){
+    static async createCourse(req: Request, res: Response){
         const {name, professor, students} = req.body
         try{
             const newCourse = await Course.create({
@@ -38,7 +38,7 @@ class CourseController{
         }
     }
 
-    async updateCourse(req: Request, res: Response){
+    static async updateCourse(req: Request, res: Response){
         const courseId = req.params.id
         const{name,professor,students} = req.body
         try{
@@ -47,12 +47,16 @@ class CourseController{
                 {name, professor, students},
                 {new:true}
             ).populate('professor').populate('students')
+            if(!updatedCourse){
+                return res.status(404).json({message: 'Student not found'})
+            }
+            res.json(updatedCourse)
         }catch(error){
             console.log(error)
         }
     }
 
-    async deleteCourse(req: Request, res: Response){
+    static async deleteCourse(req: Request, res: Response){
         const courseId = req.params.id
         try{
             const deletedCourse = await Course.findByIdAndDelete(courseId)

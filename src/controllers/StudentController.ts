@@ -2,7 +2,7 @@ import { Request, Response} from 'express'
 import Student from '../entities/Student'
 
 class StudentController{
-    async getAllStudents(req: Request, res: Response){
+    static async getAllStudents(req: Request, res: Response){
         try{
             const students = await Student.find()
             res.json(students)
@@ -11,7 +11,7 @@ class StudentController{
         }
     }
 
-    async getStudentById(req: Request, res: Response){
+    static async getStudentById(req: Request, res: Response){
         const studentId = req.params.id
     
         try{
@@ -25,7 +25,7 @@ class StudentController{
         }
     }
 
-    async createStudent(req: Request, res: Response){
+    static async createStudent(req: Request, res: Response){
         const {name, age, email} = req.body
         const student = new Student({name, age, email})
         try{
@@ -36,7 +36,7 @@ class StudentController{
         }
     }
 
-    async updateStudent(req: Request, res: Response){
+    static async updateStudent(req: Request, res: Response){
         const studentId = req.params.id;
         const {name, age, email} = req.body
         try{
@@ -56,7 +56,7 @@ class StudentController{
         }
     }
 
-    async deleteStudent(req: Request, res: Response){
+    static async deleteStudent(req: Request, res: Response){
         const studentId = req.params.id
         try{
             const deletedStudent = await Student.findByIdAndDelete(studentId) 

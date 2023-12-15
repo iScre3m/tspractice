@@ -2,16 +2,16 @@ import { Request, Response} from 'express'
 import Department from '../entities/Department'
 
 class DepartmentController{
-    async getAllDepartments(req: Request, res: Response){
+    static async getAllDepartments(req: Request, res: Response){
         try{
-            const departments = await Department.find()
+            const departments = await Department.find().populate('courses')
             res.json(departments)
         }catch(error){
             console.log(error)
         }
     }
 
-    async getDepartmentById(req: Request, res: Response){
+    static async getDepartmentById(req: Request, res: Response){
         const departmentId = req.params.id
 
         try{
@@ -25,7 +25,7 @@ class DepartmentController{
         }
     }
 
-    async createDepartment(req: Request, res: Response){
+    static async createDepartment(req: Request, res: Response){
         const {name, courses} = req.body
         try{
             const newDepartment = await Department.create({
@@ -38,7 +38,7 @@ class DepartmentController{
         }
     }
 
-    async updateDepartment(req: Request, res: Response){
+    static async updateDepartment(req: Request, res: Response){
         const departmentId = req.params.id
         const {name, courses} = req.body
         try{
@@ -59,7 +59,7 @@ class DepartmentController{
         }
     }
 
-    async deleteDepartment(req: Request, res: Response){
+    static async deleteDepartment(req: Request, res: Response){
         const departmentId = req.params.id
         try{
             const deletedDepartment = await Department.findByIdAndDelete(departmentId)

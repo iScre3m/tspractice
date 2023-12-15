@@ -2,7 +2,7 @@ import { Request, Response} from 'express'
 import Professor from '../entities/Professor'
 
 class ProfessorController{
-    async getAllProfessors(req: Request, res: Response){
+    static async getAllProfessors(req: Request, res: Response){
         try{
             const professors = await Professor.find()
             res.json(professors)
@@ -11,7 +11,7 @@ class ProfessorController{
         }
     }
 
-    async getProfessorById(req: Request, res: Response){
+    static async getProfessorById(req: Request, res: Response){
         const professorId = req.params.id
         try{
             const professor = await Professor.findById(professorId).populate('courses')
@@ -24,7 +24,7 @@ class ProfessorController{
         }
     }
 
-    async createProfessor(req: Request, res: Response){
+    static async createProfessor(req: Request, res: Response){
         const {name, email, courses} = req.body
         const professor = new Professor({name, email, courses})
         try{
@@ -35,7 +35,7 @@ class ProfessorController{
         }
     }
 
-    async updateProfessor(req: Request, res:Response){
+    static async updateProfessor(req: Request, res:Response){
         const professorId = req.params.id
         const {name, email, courses} = req.body
         try{
@@ -49,7 +49,7 @@ class ProfessorController{
         }
     }
 
-    async deleteProfessor(req: Request, res: Response){
+    static async deleteProfessor(req: Request, res: Response){
         const professorId = req.params.id
         try{
             const deletedProfessor = await Professor.findByIdAndDelete(professorId)
