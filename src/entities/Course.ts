@@ -12,4 +12,5 @@ const courseSchema = new Schema<ICourse>({
     students: [{type: Schema.Types.ObjectId, ref:'Student'}]
 })
 
-export default mongoose.model<ICourse>('Course', courseSchema)
+const Course = mongoose.model<ICourse>('Course', courseSchema)
+export default Course

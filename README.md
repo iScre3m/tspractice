@@ -6,18 +6,11 @@ University System implemented with Node.js, TypeScript, MongoDB and Express.
 
 This project uses the dependancies:
 
-* node v20.10.4
-
-* express" v4.17.21
-
-* tsx v4.6.2
-
-* mongodb v6.3.0
-
-* mongoose v8.0.3
-    
-* typescript v5.3.3
-
+* node  allows you to execute javascript code on the server-side.
+* express" simplifies the process of building robust and scalable web applications by providing features for handling HTTP request, routing, middleware, and more.
+* mongodb is a NOSQL database that stores data in JSON-life format. 
+* mongoose is an Object Data Modeling library for MongoDB and Node.js. It provides a higher-level schema-based abstraction over raw MongoDB operations, making it easier to interact with mongoDB.
+* typescript is a superset of Javascript that adds static typing, interfaces and helps catch errors early in the development process.
 ## Usage
 Clone the project
 ```bash
@@ -31,7 +24,8 @@ Install dependencies
 ```bash
 npm install
 ```
-
+Create MongoDB database and setup .env file with credentials
+## Run application
 ```bash
 npm run start
 ```

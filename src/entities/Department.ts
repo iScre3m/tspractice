@@ -11,4 +11,5 @@ const departmentSchema = new Schema<IDepartment>({
     courses: [{type: Schema.Types.ObjectId, ref:'Course'}]
 })
 
-export default mongoose.model<IDepartment>('Department', departmentSchema)
+const Department = mongoose.model<IDepartment>('Department', departmentSchema)
+export default Department
