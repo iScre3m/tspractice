@@ -1,5 +1,4 @@
 import mongoose, {Document, Schema, Types} from 'mongoose'
-import Student from './Student';
 
 interface IDepartment extends Document{
     name: string,
