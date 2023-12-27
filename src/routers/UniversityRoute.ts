@@ -3,8 +3,10 @@ import UniversityController from '../controllers/UniversityController'
 
 const router = express.Router()
 
-router.get('/')
-router.get('/')
-router.post('/')
-router.put('/')
-router.delete('/')
+router.get('/',UniversityController.getAllUniversities)
+router.get('/:id',UniversityController.getUniversityById)
+router.post('/',UniversityController.createUniversity)
+router.put('/:id',UniversityController.updateUniversity)
+router.delete('/:id',UniversityController.deleteUniversity)
+
+export default router
