@@ -1,5 +1,5 @@
 import { Request, Response} from 'express'
-import Department from '../entities/Department'
+import Department from '../models/Department'
 
 class DepartmentController{
     static async getAllDepartments(req: Request, res: Response){

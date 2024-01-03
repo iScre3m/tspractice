@@ -1,5 +1,5 @@
 import { Request, Response} from 'express'
-import Course from '../entities/Course'
+import Course from '../models/Course'
 
 class CourseController{
     static async getAllCourses(req: Request, res: Response){
