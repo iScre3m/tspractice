@@ -1,26 +1,31 @@
 import { Request, Response} from 'express'
 import Exam from '../models/Exam'
+import log4js from '../../src/logger'
+
+const logger = log4js.getLogger("file")
 
 class ExamController{
     static async getAllExams(req: Request, res: Response){
         try{
             const exams = await Exam.find().populate('course').populate('student')
+            logger.info('All exams were found')
             res.json(exams)
         }catch(error){
-            console.log(error)
+            logger.error(error)
         }
     }
 
     static async getExamById(req: Request, res: Response){
-        const ExamId = req.params.id
+        const examId = req.params.id
         try{
-            const exam = await Exam.findById(ExamId).populate('course').populate('student')
+            const exam = await Exam.findById(examId).populate('course').populate('student')
             if(!exam){
                 return res.status(404).json({ message: 'Exam not found'})
             }
+            logger.info(`Exam ${examId} found`)
             res.json(exam)
         }catch(error){
-            console.log(error)
+            logger.error(error)
         }
     }
 
@@ -33,9 +38,10 @@ class ExamController{
                 course: course,
                 students: students
             })
+            logger.info(`Exam created successfully`)
             res.status(201).json(newExam)
         }catch(error){
-            console.log(error)
+            logger.error(error)
         }
     }
 
@@ -51,9 +57,10 @@ class ExamController{
             if(!updatedExam){
                 return res.status(404).json({message: 'Exam not found'})
             }
+            logger.info(`Exam ${examId} updated successfully`)
             res.json(updatedExam)
         }catch(error){
-            console.log(error)
+            logger.error(error)
         }
     }
 
@@ -64,9 +71,10 @@ class ExamController{
             if(!deletedExam){
                 return res.status(404).json({message:'Exam not found'})
             }
+            logger.info(`Exam ${examId} deleted successfully`)
             res.json({message:'Exam deleted successfully'})
         }catch(error){
-            console.log(error)
+            logger.error(error)
         }
     }
 }

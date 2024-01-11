@@ -1,26 +1,31 @@
 import { Request, Response} from 'express'
 import Enrollment from '../models/Enrollment'
+import log4js from '../../src/logger'
+
+const logger = log4js.getLogger("file")
 
 class EnrollmentController{
     static async getAllEnrollments(req: Request, res: Response){
         try{
             const enrollments = await Enrollment.find().populate('course').populate('student')
+            logger.info('All enrollments were found')
             res.json(enrollments)
         }catch(error){
-            console.log(error)
+            logger.error(error)
         }
     }
 
     static async getEnrollmentById(req: Request, res: Response){
-        const EnrollmentId = req.params.id
+        const enrollmentId = req.params.id
         try{
-            const enrollment = await Enrollment.findById(EnrollmentId).populate('course').populate('student')
+            const enrollment = await Enrollment.findById(enrollmentId).populate('course').populate('student')
             if(!enrollment){
                 return res.status(404).json({ message: 'Enrollment not found'})
             }
+            logger.info(`Enrollment ${enrollmentId} found`)
             res.json(enrollment)
         }catch(error){
-            console.log(error)
+            logger.error(error)
         }
     }
 
@@ -32,9 +37,10 @@ class EnrollmentController{
                 course: course,
                 student: student
             })
+            logger.info(`Enrollment created successfully`)
             res.status(201).json(newEnrollment)
         }catch(error){
-            console.log(error)
+            logger.error(error)
         }
     }
 
@@ -50,9 +56,10 @@ class EnrollmentController{
             if(!updatedEnrollment){
                 return res.status(404).json({message: 'Enrollment not found'})
             }
+            logger.info(`Enrollment ${enrollmentId} updated successfully`)
             res.json(updatedEnrollment)
         }catch(error){
-            console.log(error)
+            logger.error(error)
         }
     }
 
@@ -63,9 +70,10 @@ class EnrollmentController{
             if(!deletedEnrollment){
                 return res.status(404).json({message:'Enrollment not found'})
             }
+            logger.info(`Enrollment ${enrollmentId} deleted successfully`)
             res.json({message:'Enrollment deleted successfully'})
         }catch(error){
-            console.log(error)
+            logger.error(error)
         }
     }
 }

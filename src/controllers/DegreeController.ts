@@ -1,26 +1,31 @@
 import { Request, Response} from 'express'
 import Degree from '../models/Degree'
+import log4js from '../../src/logger'
+
+const logger = log4js.getLogger("file")
 
 class DegreeController{
     static async getAllDegrees(req: Request, res: Response){
         try{
             const degrees = await Degree.find().populate('courses').populate('students')
+            logger.info('All degrees were found')
             res.json(degrees)
         }catch(error){
-            console.log(error)
+            logger.error(error)
         }
     }
 
     static async getDegreeById(req: Request, res: Response){
-        const DegreeId = req.params.id
+        const degreeId = req.params.id
         try{
-            const degree = await Degree.findById(DegreeId).populate('courses').populate('students')
+            const degree = await Degree.findById(degreeId).populate('courses').populate('students')
             if(!degree){
                 return res.status(404).json({ message: 'Degree not found'})
             }
+            logger.info(`Degree ${degreeId} found`)
             res.json(degree)
         }catch(error){
-            console.log(error)
+            logger.error(error)
         }
     }
 
@@ -32,9 +37,10 @@ class DegreeController{
                 courses: courses || [],
                 students: students || []
             })
+            logger.info(`Course created successfully`)
             res.status(201).json(newDegree)
         }catch(error){
-            console.log(error)
+            logger.error(error)
         }
     }
 
@@ -50,9 +56,10 @@ class DegreeController{
             if(!updatedDegree){
                 return res.status(404).json({message: 'Degree not found'})
             }
+            logger.info(`Degree ${degreeId} updated successfully`)
             res.json(updatedDegree)
         }catch(error){
-            console.log(error)
+            logger.error(error)
         }
     }
 
@@ -63,9 +70,10 @@ class DegreeController{
             if(!deletedDegree){
                 return res.status(404).json({message:'Degree not found'})
             }
+            logger.info(`Degree ${degreeId} deleted successfully`)
             res.json({message:'Degree deleted successfully'})
         }catch(error){
-            console.log(error)
+            logger.error(error)
         }
     }
 }

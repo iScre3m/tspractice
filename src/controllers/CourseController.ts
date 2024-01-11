@@ -1,13 +1,17 @@
 import { Request, Response} from 'express'
 import Course from '../models/Course'
+import log4js from '../../src/logger'
+
+const logger = log4js.getLogger("file")
 
 class CourseController{
     static async getAllCourses(req: Request, res: Response){
         try{
             const courses = await Course.find().populate('professor').populate('students')
+            logger.info('All courses were found')
             res.json(courses)
         }catch(error){
-            console.log(error)
+            logger.error(error)
         }
     }
 
@@ -18,9 +22,10 @@ class CourseController{
             if(!course){
                 return res.status(404).json({ message: 'Course not found'})
             }
+            logger.info(`Course ${courseId} found`)
             res.json(course)
         }catch(error){
-            console.log(error)
+            logger.error(error)
         }
     }
 
@@ -32,9 +37,10 @@ class CourseController{
                 professor,
                 students: students || []
             })
+            logger.info(`Course ${newCourse} created successfully`)
             res.status(201).json(newCourse)
         }catch(error){
-            console.log(error)
+            logger.error(error)
         }
     }
 
@@ -48,11 +54,12 @@ class CourseController{
                 {new:true}
             ).populate('professor').populate('students')
             if(!updatedCourse){
-                return res.status(404).json({message: 'Student not found'})
+                return res.status(404).json({message: 'Course not found'})
             }
+            logger.info(`Course ${courseId} updated successfully`)
             res.json(updatedCourse)
         }catch(error){
-            console.log(error)
+            logger.error(error)
         }
     }
 
@@ -63,9 +70,10 @@ class CourseController{
             if(!deletedCourse){
                 return res.status(404).json({message:'Course not found'})
             }
+            logger.info(`Course deleted successfully`)
             res.json({message:'Course deleted successfully'})
         }catch(error){
-            console.log(error)
+            logger.error(error)
         }
     }
 }
