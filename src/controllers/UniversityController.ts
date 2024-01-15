@@ -1,13 +1,17 @@
 import { Request, Response} from 'express'
-import University from '../entities/University'
+import University from '../models/University'
+import log4js from '../../src/logger'
+
+const logger = log4js.getLogger("file")
 
 class UniversityController{
     static async getAllUniversities(req: Request, res: Response){
         try{
             const universities = await University.find().populate('courses')
+            logger.info('All Universities were found')
             res.json(universities)
         }catch(error){
-            console.log(error)
+            logger.error(error)
         }
     }
 
@@ -18,9 +22,10 @@ class UniversityController{
             if(!university){
                 return res.status(404).json({message: 'University not found'})
             }
+            logger.info(`University ${universityId} found`)
             res.json(university)
         }catch(error){
-            console.log(error)
+            logger.error(error)
         }
     }
 
@@ -32,9 +37,10 @@ class UniversityController{
                 address,
                 courses: courses || []
             })
+            logger.info(`University created successfully`)
             res.status(201).json(newUniveristy)
         }catch(error){
-            console.log(error)
+            logger.error(error)
         }
     }
 
@@ -50,9 +56,10 @@ class UniversityController{
             if(!updatedUniversity){
                 return res.status(404).json({message:'University not found'})
             }
+            logger.info(`University ${universityId} updated successfully`)
             res.json(updatedUniversity)
         }catch(error){
-            console.log(error)
+            logger.error(error)
         }
     }
 
@@ -63,9 +70,10 @@ class UniversityController{
             if(!deletedUniveristy){
                 return res.status(404).json({message:'University not found'})
             }
+            logger.info(`University ${universityId} deleted successfully`)
             res.json({message: 'Univerisity deleted successfully'})
         }catch(error){
-            console.log(error)
+            logger.error(error)
         }
     }
 }

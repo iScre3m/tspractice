@@ -1,13 +1,17 @@
 import { Request, Response} from 'express'
-import Professor from '../entities/Professor'
+import Professor from '../models/Professor'
+import log4js from '../../src/logger'
+
+const logger = log4js.getLogger("file")
 
 class ProfessorController{
     static async getAllProfessors(req: Request, res: Response){
         try{
             const professors = await Professor.find()
+            logger.info('All professors were found')
             res.json(professors)
         }catch(error){
-            console.log(error)
+            logger.error(error)
         }
     }
 
@@ -18,20 +22,25 @@ class ProfessorController{
             if(!professor){
                 return res.status(404).json({ message: 'Professor not found'})
             }
+            logger.info(`Professor ${professorId} found`)
             res.json(professor)
         }catch(error){
-            console.log(error)
+            logger.error(error)
         }
     }
 
     static async createProfessor(req: Request, res: Response){
         const {name, email, courses} = req.body
-        const professor = new Professor({name, email, courses})
         try{
-            const newProfessor = await professor.save()
+            const newProfessor = await Professor.create({
+                name, 
+                email, 
+                courses : courses || []
+            })
+            logger.info(`Professor created successfully`)
             res.json(newProfessor)
         }catch(error){
-            console.log(error)
+            logger.error(error)
         }
     }
 
@@ -44,8 +53,13 @@ class ProfessorController{
                 {name, email, courses},
                 {new: true}
                 ).populate('courses')
+                if(!this.updateProfessor){
+                    return res.status(404).json({message: 'Professor not found'})
+                }
+                logger.info(`Professor ${professorId} updated successfully`)
+                res.json(updatedProfessor)
         }catch(error){
-            console.log(error)
+            logger.error(error)
         }
     }
 
@@ -56,9 +70,10 @@ class ProfessorController{
             if(!deletedProfessor){
                 return res.status(404).json({message: 'Professor not found'})
             }
+            logger.info(`Professor ${professorId} deleted successfully`)
             res.json({message: 'Professor deleted successfully'})
         }catch(error){
-            console.log(error)
+            logger.error(error)
         }
     }
 }
