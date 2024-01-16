@@ -7,11 +7,17 @@ const logger = log4js.getLogger("file")
 class DegreeController{
     static async getAllDegrees(req: Request, res: Response){
         try{
-            const degrees = await Degree.find().populate('courses').populate('students')
+            const {name} = req.query
+            const filter: any = {}
+            if(name){
+                filter.name = name
+            }
+            const degrees = await Degree.find(filter).populate('courses').populate('students')
             logger.info('All degrees were found')
             res.json(degrees)
         }catch(error){
-            logger.error(error)
+            logger.error("Error finding courses: ",error)
+            res.status(500).json({ error: 'Internal Server Error' });
         }
     }
 
@@ -25,7 +31,8 @@ class DegreeController{
             logger.info(`Degree ${degreeId} found`)
             res.json(degree)
         }catch(error){
-            logger.error(error)
+            logger.error("Error fiinding degree by id",error)
+            res.status(500).json({ error: 'Internal Server Error' });
         }
     }
 
@@ -40,7 +47,8 @@ class DegreeController{
             logger.info(`Course created successfully`)
             res.status(201).json(newDegree)
         }catch(error){
-            logger.error(error)
+            logger.error("Error creating degree: ",error)
+            res.status(500).json({ error: 'Internal Server Error' });
         }
     }
 
@@ -59,7 +67,8 @@ class DegreeController{
             logger.info(`Degree ${degreeId} updated successfully`)
             res.json(updatedDegree)
         }catch(error){
-            logger.error(error)
+            logger.error("Error updating degree: ",error)
+            res.status(500).json({ error: 'Internal Server Error' });
         }
     }
 
@@ -73,7 +82,8 @@ class DegreeController{
             logger.info(`Degree ${degreeId} deleted successfully`)
             res.json({message:'Degree deleted successfully'})
         }catch(error){
-            logger.error(error)
+            logger.error("Error deleting degree: ",error)
+            res.status(500).json({ error: 'Internal Server Error' });
         }
     }
 }

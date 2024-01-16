@@ -7,11 +7,23 @@ const logger = log4js.getLogger("file")
 class EnrollmentController{
     static async getAllEnrollments(req: Request, res: Response){
         try{
-            const enrollments = await Enrollment.find().populate('course').populate('student')
-            logger.info('All enrollments were found')
+            const {course,student} = req.query
+
+            const filter: any = {}
+
+            if(course){
+                filter.course = course
+            }
+            if(student){
+                filter.student = student
+            }
+
+            const enrollments = await Enrollment.find(filter).populate('course').populate('student')
+            logger.info('Enrollments were found')
             res.json(enrollments)
         }catch(error){
-            logger.error(error)
+            logger.error("Error finding enrollments: ",error)
+            res.status(500).json({ error: 'Internal Server Error' });
         }
     }
 
@@ -25,7 +37,8 @@ class EnrollmentController{
             logger.info(`Enrollment ${enrollmentId} found`)
             res.json(enrollment)
         }catch(error){
-            logger.error(error)
+            logger.error("Error getting enrollment by id: ",error)
+            res.status(500).json({ error: 'Internal Server Error' });
         }
     }
 
@@ -40,7 +53,8 @@ class EnrollmentController{
             logger.info(`Enrollment created successfully`)
             res.status(201).json(newEnrollment)
         }catch(error){
-            logger.error(error)
+            logger.error("Error creating enrollment: ",error)
+            res.status(500).json({ error: 'Internal Server Error' });
         }
     }
 
@@ -59,7 +73,8 @@ class EnrollmentController{
             logger.info(`Enrollment ${enrollmentId} updated successfully`)
             res.json(updatedEnrollment)
         }catch(error){
-            logger.error(error)
+            logger.error("Error updating enrollment: ",error)
+            res.status(500).json({ error: 'Internal Server Error' });
         }
     }
 
@@ -73,7 +88,8 @@ class EnrollmentController{
             logger.info(`Enrollment ${enrollmentId} deleted successfully`)
             res.json({message:'Enrollment deleted successfully'})
         }catch(error){
-            logger.error(error)
+            logger.error("Error deleting enrollment: ",error)
+            res.status(500).json({ error: 'Internal Server Error' });
         }
     }
 }
