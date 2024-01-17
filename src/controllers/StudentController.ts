@@ -2,7 +2,7 @@ import { Request, Response} from 'express'
 import Student from '../models/Student'
 import log4js from '../../src/logger'
 
-const logger = log4js.getLogger("file")
+const logger = log4js.getLogger('file')
 
 class StudentController{
     static async getAllStudents(req: Request, res: Response){
@@ -22,7 +22,7 @@ class StudentController{
             logger.info('Students were found')
             res.json(students)
         }catch(error){
-            logger.error("Error finding students: ",error)
+            logger.error('Error finding students: ',error)
             res.status(500).json({ error: 'Internal Server Error' });
         }
     }
@@ -37,7 +37,7 @@ class StudentController{
             logger.info(`Student ${studentId} found`)
             res.json(student)
         }catch(error){
-            logger.error("Error finding student by id: ",error)
+            logger.error('Error finding student by id: ',error)
             res.status(500).json({ error: 'Internal Server Error' });
         }
     }
@@ -48,10 +48,10 @@ class StudentController{
             const newStudent = await Student.create({
                 name, age, email
             })
-            logger.info(`Student created successfully`)
+            logger.info('Student created successfully')
             res.json(newStudent)
         }catch(error){
-            logger.error("Error creating student: ",error)
+            logger.error('Error creating student: ',error)
             res.status(500).json({ error: 'Internal Server Error' });
         }
     }
@@ -71,7 +71,7 @@ class StudentController{
             logger.info(`Student ${studentId} updated successfully`)
             res.json(updateStudent)
         }catch(error){
-            logger.error("Error updating student: ",error)
+            logger.error('Error updating student: ',error)
             res.status(500).json({ error: 'Internal Server Error' });
         }
     }
@@ -86,7 +86,7 @@ class StudentController{
             logger.info(`Student ${studentId} deleted successfully`)
             res.json({messsage: 'Student deleted successfully'})
         }catch(error){
-            logger.error("Error deleting student: ",error)
+            logger.error('Error deleting student: ',error)
             res.status(500).json({ error: 'Internal Server Error' });
         }
     }

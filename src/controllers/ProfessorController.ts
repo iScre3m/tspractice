@@ -2,7 +2,7 @@ import { Request, Response} from 'express'
 import Professor from '../models/Professor'
 import log4js from '../../src/logger'
 
-const logger = log4js.getLogger("file")
+const logger = log4js.getLogger('file')
 
 class ProfessorController{
     static async getAllProfessors(req: Request, res: Response){
@@ -19,7 +19,7 @@ class ProfessorController{
             logger.info('Professors were found')
             res.json(professors)
         }catch(error){
-            logger.error("Error finding professors: ",error)
+            logger.error('Error finding professors: ',error)
             res.status(500).json({ error: 'Internal Server Error' });
         }
     }
@@ -34,7 +34,7 @@ class ProfessorController{
             logger.info(`Professor ${professorId} found`)
             res.json(professor)
         }catch(error){
-            logger.error("Error finding professor by id: ",error)
+            logger.error('Error finding professor by id: ',error)
             res.status(500).json({ error: 'Internal Server Error' });
         }
     }
@@ -47,10 +47,10 @@ class ProfessorController{
                 email, 
                 courses : courses || []
             })
-            logger.info(`Professor created successfully`)
+            logger.info('Professor created successfully')
             res.json(newProfessor)
         }catch(error){
-            logger.error("Error creating professor: ",error)
+            logger.error('Error creating professor: ',error)
             res.status(500).json({ error: 'Internal Server Error' });
         }
     }
@@ -70,7 +70,7 @@ class ProfessorController{
                 logger.info(`Professor ${professorId} updated successfully`)
                 res.json(updatedProfessor)
         }catch(error){
-            logger.error("Error updating professor: ",error)
+            logger.error('Error updating professor: ',error)
             res.status(500).json({ error: 'Internal Server Error' });
         }
     }
@@ -85,7 +85,7 @@ class ProfessorController{
             logger.info(`Professor ${professorId} deleted successfully`)
             res.json({message: 'Professor deleted successfully'})
         }catch(error){
-            logger.error("Error deleting professor: ",error)
+            logger.error('Error deleting professor: ',error)
             res.status(500).json({ error: 'Internal Server Error' });
         }
     }
@@ -94,10 +94,10 @@ class ProfessorController{
         try{
             const name = req.params.name
             const professor = await Professor.find({name})
-            logger.info(`Found professor by name successfully`)
+            logger.info('Found professor by name successfully')
             res.json(professor)
         }catch(error){
-            logger.error("Error finding professor by name",error)
+            logger.error('Error finding professor by name',error)
             res.status(500).json({ error: 'Internal Server Error' });
         }
     }

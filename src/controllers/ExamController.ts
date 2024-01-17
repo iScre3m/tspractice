@@ -3,14 +3,13 @@ import Exam from '../models/Exam'
 import log4js from '../../src/logger'
 import { Types } from 'mongoose'
 
-const logger = log4js.getLogger("file")
+const logger = log4js.getLogger('file')
 
 class ExamController{
     static async getAllExams(req: Request, res: Response){
         try{
             const {location,course} = req.query
             const filter : any = {}
-
             if(location){
                 filter.location = location
             }
@@ -21,7 +20,7 @@ class ExamController{
             logger.info('Exams were found')
             res.json(exams)
         }catch(error){
-            logger.error("Error finding exams: ",error)
+            logger.error('Error finding exams: ',error)
             res.status(500).json({ error: 'Internal Server Error' });
         }
     }
@@ -36,7 +35,7 @@ class ExamController{
             logger.info(`Exam ${examId} found`)
             res.json(exam)
         }catch(error){
-            logger.error("Error getting exam by id",error)
+            logger.error('Error getting exam by id',error)
             res.status(500).json({ error: 'Internal Server Error' });
         }
     }
@@ -50,10 +49,10 @@ class ExamController{
                 course: course,
                 students: students
             })
-            logger.info(`Exam created successfully`)
+            logger.info('Exam created successfully')
             res.status(201).json(newExam)
         }catch(error){
-            logger.error("Error creating exam: ",error)
+            logger.error('Error creating exam: ',error)
             res.status(500).json({ error: 'Internal Server Error' });
         }
     }
@@ -73,7 +72,7 @@ class ExamController{
             logger.info(`Exam ${examId} updated successfully`)
             res.json(updatedExam)
         }catch(error){
-            logger.error("Error updaing exam: " ,error)
+            logger.error('Error updaing exam: ' ,error)
             res.status(500).json({ error: 'Internal Server Error' });
         }
     }
@@ -88,7 +87,7 @@ class ExamController{
             logger.info(`Exam ${examId} deleted successfully`)
             res.json({message:'Exam deleted successfully'})
         }catch(error){
-            logger.error("Error deleting exam: ",error)
+            logger.error('Error deleting exam: ',error)
             res.status(500).json({ error: 'Internal Server Error' });
         }
     }
@@ -97,10 +96,10 @@ class ExamController{
         try{
             const courseId = req.params.id
             const exam = await Exam.find({courseId})
-            logger.info("Found exam by course")
+            logger.info('Found exam by course')
             res.json(exam)
         }catch(error){
-            logger.error("Error finding exam by course: ",error)
+            logger.error('Error finding exam by course: ',error)
             res.status(500).json({ error: 'Internal Server Error' });
         }
     }
@@ -111,7 +110,7 @@ class ExamController{
             const exam = await Exam.find({location})
             res.json(exam)
         }catch(error){
-            logger.error("Error finding exam by location",error)
+            logger.error('Error finding exam by location',error)
             res.status(500).json({ error: 'Internal Server Error' });
         }
     }

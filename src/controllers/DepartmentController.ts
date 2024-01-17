@@ -2,24 +2,21 @@ import { Request, Response} from 'express'
 import Department from '../models/Department'
 import log4js from '../../src/logger'
 
-const logger = log4js.getLogger("file")
+const logger = log4js.getLogger('file')
 
 class DepartmentController{
     static async getAllDepartments(req: Request, res: Response){
         try{
             const {name} = req.query
-
             const filter: any = {}
-
             if(name){
                 filter.name = name
             }
-
             const departments = await Department.find(filter).populate('courses')
             logger.info('Departments were found')
             res.json(departments)
         }catch(error){
-            logger.error("Error finding departments",error)
+            logger.error('Error finding departments',error)
             res.status(500).json({ error: 'Internal Server Error' });
         }
     }
@@ -34,7 +31,7 @@ class DepartmentController{
             logger.info(`Department ${departmentId} found`)
             res.json(department)
         }catch(error){
-            logger.error("Error finding department by id: ",error)
+            logger.error('Error finding department by id: ',error)
             res.status(500).json({ error: 'Internal Server Error' });
         }
     }
@@ -46,10 +43,10 @@ class DepartmentController{
                 name,
                 courses: courses || []
             })
-            logger.info(`Department created successfully`)
+            logger.info('Department created successfully')
             res.status(201).json(newDepartment)
         }catch(error){
-            logger.error("Error creating department: ",error)
+            logger.error('Error creating department: ',error)
             res.status(500).json({ error: 'Internal Server Error' });
         }
     }
@@ -69,7 +66,7 @@ class DepartmentController{
             logger.info(`Department ${departmentId} updated successfully`)
             res.json(updatedDepartment)
         }catch(error){
-            logger.error("Error updating department: ",error)
+            logger.error('Error updating department: ',error)
             res.status(500).json({ error: 'Internal Server Error' });
         }
     }
@@ -84,7 +81,7 @@ class DepartmentController{
             logger.info(`Department ${departmentId} deleted successfully`)
             res.json({ message: 'Department deleted successfully'})
         }catch(error){
-            logger.error("Error deleting department: ",error)
+            logger.error('Error deleting department: ',error)
             res.status(500).json({ error: 'Internal Server Error' });
         }
     }

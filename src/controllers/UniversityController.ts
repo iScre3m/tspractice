@@ -2,7 +2,7 @@ import { Request, Response} from 'express'
 import University from '../models/University'
 import log4js from '../../src/logger'
 
-const logger = log4js.getLogger("file")
+const logger = log4js.getLogger('file')
 
 class UniversityController{
     static async getAllUniversities(req: Request, res: Response){
@@ -19,7 +19,7 @@ class UniversityController{
             logger.info('Universities were found')
             res.json(universities)
         }catch(error){
-            logger.error("Error finding universities: ",error)
+            logger.error('Error finding universities: ',error)
             res.status(500).json({ error: 'Internal Server Error' });
         }
     }
@@ -34,7 +34,7 @@ class UniversityController{
             logger.info(`University ${universityId} found`)
             res.json(university)
         }catch(error){
-            logger.error("Error finding university by id: ",error)
+            logger.error('Error finding university by id: ',error)
             res.status(500).json({ error: 'Internal Server Error' });
         }
     }
@@ -47,10 +47,10 @@ class UniversityController{
                 address,
                 courses: courses || []
             })
-            logger.info(`University created successfully`)
+            logger.info('University created successfully')
             res.status(201).json(newUniveristy)
         }catch(error){
-            logger.error("Error creating univerisity: ",error)
+            logger.error('Error creating univerisity: ',error)
             res.status(500).json({ error: 'Internal Server Error' });
         }
     }
@@ -70,7 +70,7 @@ class UniversityController{
             logger.info(`University ${universityId} updated successfully`)
             res.json(updatedUniversity)
         }catch(error){
-            logger.error("Error updating university: ",error)
+            logger.error('Error updating university: ',error)
             res.status(500).json({ error: 'Internal Server Error' });
         }
     }
@@ -85,7 +85,7 @@ class UniversityController{
             logger.info(`University ${universityId} deleted successfully`)
             res.json({message: 'Univerisity deleted successfully'})
         }catch(error){
-            logger.error("Error deleting univerisity: ",error)
+            logger.error('Error deleting univerisity: ',error)
             res.status(500).json({ error: 'Internal Server Error' });
         }
     }
