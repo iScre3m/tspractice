@@ -1,28 +1,29 @@
-import { Request, Response } from "express";
-import Course from "../models/Course";
-import log4js from "../../src/logger";
+import { Request, Response } from 'express';
+import Course from '../models/Course';
+import log4js from '../../src/logger';
+import { Types } from 'mongoose';
 
-const logger = log4js.getLogger("file");
+const logger = log4js.getLogger('file');
 
 class CourseController {
   static async getAllCourses(req: Request, res: Response) {
     try {
       const { name, professor } = req.query;
-      const filter: any = {};
-      if (name) {
+      const filter: { name?: string; professor?: Types.ObjectId } = {};
+      if (typeof name === 'string') {
         filter.name = name;
       }
-      if (professor) {
+      if (professor instanceof Types.ObjectId) {
         filter.professor = professor;
       }
       const courses = await Course.find(filter)
-        .populate("professor")
-        .populate("students");
-      logger.info("Courses were found");
+        .populate('professor')
+        .populate('students');
+      logger.info('Courses were found');
       res.json(courses);
     } catch (error) {
-      logger.error("Error finding courses: ", error);
-      res.status(500).json({ error: "Internal Server Error" });
+      logger.error('Error finding courses: ', error);
+      res.status(500).json({ error: 'Internal Server Error' });
     }
   }
 
@@ -30,16 +31,16 @@ class CourseController {
     const courseId = req.params.id;
     try {
       const course = await Course.findById(courseId)
-        .populate("professor")
-        .populate("students");
+        .populate('professor')
+        .populate('students');
       if (!course) {
-        return res.status(404).json({ message: "Course not found" });
+        return res.status(404).json({ message: 'Course not found' });
       }
       logger.info(`Course ${courseId} found`);
       res.json(course);
     } catch (error) {
-      logger.error("Error finding courses by id: ", error);
-      res.status(500).json({ error: "Internal Server Error" });
+      logger.error('Error finding courses by id: ', error);
+      res.status(500).json({ error: 'Internal Server Error' });
     }
   }
 
@@ -54,8 +55,8 @@ class CourseController {
       logger.info(`Course ${newCourse} created successfully`);
       res.status(201).json(newCourse);
     } catch (error) {
-      logger.error("Error creating course: ", error);
-      res.status(500).json({ error: "Internal Server Error" });
+      logger.error('Error creating course: ', error);
+      res.status(500).json({ error: 'Internal Server Error' });
     }
   }
 
@@ -68,16 +69,16 @@ class CourseController {
         { name, professor, students },
         { new: true }
       )
-        .populate("professor")
-        .populate("students");
+        .populate('professor')
+        .populate('students');
       if (!updatedCourse) {
-        return res.status(404).json({ message: "Course not found" });
+        return res.status(404).json({ message: 'Course not found' });
       }
       logger.info(`Course ${courseId} updated successfully`);
       res.json(updatedCourse);
     } catch (error) {
-      logger.error("Error updating course: ", error);
-      res.status(500).json({ error: "Internal Server Error" });
+      logger.error('Error updating course: ', error);
+      res.status(500).json({ error: 'Internal Server Error' });
     }
   }
 
@@ -86,13 +87,13 @@ class CourseController {
     try {
       const deletedCourse = await Course.findByIdAndDelete(courseId);
       if (!deletedCourse) {
-        return res.status(404).json({ message: "Course not found" });
+        return res.status(404).json({ message: 'Course not found' });
       }
-      logger.info("Course deleted successfully");
-      res.json({ message: "Course deleted successfully" });
+      logger.info('Course deleted successfully');
+      res.json({ message: 'Course deleted successfully' });
     } catch (error) {
-      logger.error("Error deleting course: ", error);
-      res.status(500).json({ error: "Internal Server Error" });
+      logger.error('Error deleting course: ', error);
+      res.status(500).json({ error: 'Internal Server Error' });
     }
   }
 }

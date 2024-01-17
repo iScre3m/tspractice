@@ -1,28 +1,29 @@
-import { Request, Response } from "express";
-import Enrollment from "../models/Enrollment";
-import log4js from "../../src/logger";
+import { Request, Response } from 'express';
+import Enrollment from '../models/Enrollment';
+import log4js from '../../src/logger';
+import { Types } from 'mongoose';
 
-const logger = log4js.getLogger("file");
+const logger = log4js.getLogger('file');
 
 class EnrollmentController {
   static async getAllEnrollments(req: Request, res: Response) {
     try {
       const { course, student } = req.query;
-      const filter: any = {};
-      if (course) {
+      const filter: { course?: Types.ObjectId; student?: Types.ObjectId } = {};
+      if (course instanceof Types.ObjectId) {
         filter.course = course;
       }
-      if (student) {
+      if (student instanceof Types.ObjectId) {
         filter.student = student;
       }
       const enrollments = await Enrollment.find(filter)
-        .populate("course")
-        .populate("student");
-      logger.info("Enrollments were found");
+        .populate('course')
+        .populate('student');
+      logger.info('Enrollments were found');
       res.json(enrollments);
     } catch (error) {
-      logger.error("Error finding enrollments: ", error);
-      res.status(500).json({ error: "Internal Server Error" });
+      logger.error('Error finding enrollments: ', error);
+      res.status(500).json({ error: 'Internal Server Error' });
     }
   }
 
@@ -30,16 +31,16 @@ class EnrollmentController {
     const enrollmentId = req.params.id;
     try {
       const enrollment = await Enrollment.findById(enrollmentId)
-        .populate("course")
-        .populate("student");
+        .populate('course')
+        .populate('student');
       if (!enrollment) {
-        return res.status(404).json({ message: "Enrollment not found" });
+        return res.status(404).json({ message: 'Enrollment not found' });
       }
       logger.info(`Enrollment ${enrollmentId} found`);
       res.json(enrollment);
     } catch (error) {
-      logger.error("Error getting enrollment by id: ", error);
-      res.status(500).json({ error: "Internal Server Error" });
+      logger.error('Error getting enrollment by id: ', error);
+      res.status(500).json({ error: 'Internal Server Error' });
     }
   }
 
@@ -51,11 +52,11 @@ class EnrollmentController {
         course: course,
         student: student,
       });
-      logger.info("Enrollment created successfully");
+      logger.info('Enrollment created successfully');
       res.status(201).json(newEnrollment);
     } catch (error) {
-      logger.error("Error creating enrollment: ", error);
-      res.status(500).json({ error: "Internal Server Error" });
+      logger.error('Error creating enrollment: ', error);
+      res.status(500).json({ error: 'Internal Server Error' });
     }
   }
 
@@ -68,33 +69,32 @@ class EnrollmentController {
         { date, course, student },
         { new: true }
       )
-        .populate("course")
-        .populate("student");
+        .populate('course')
+        .populate('student');
       if (!updatedEnrollment) {
-        return res.status(404).json({ message: "Enrollment not found" });
+        return res.status(404).json({ message: 'Enrollment not found' });
       }
       logger.info(`Enrollment ${enrollmentId} updated successfully`);
       res.json(updatedEnrollment);
     } catch (error) {
-      logger.error("Error updating enrollment: ", error);
-      res.status(500).json({ error: "Internal Server Error" });
+      logger.error('Error updating enrollment: ', error);
+      res.status(500).json({ error: 'Internal Server Error' });
     }
   }
 
   static async deleteEnrollment(req: Request, res: Response) {
     const enrollmentId = req.params.id;
     try {
-      const deletedEnrollment = await Enrollment.findByIdAndDelete(
-        enrollmentId
-      );
+      const deletedEnrollment =
+        await Enrollment.findByIdAndDelete(enrollmentId);
       if (!deletedEnrollment) {
-        return res.status(404).json({ message: "Enrollment not found" });
+        return res.status(404).json({ message: 'Enrollment not found' });
       }
       logger.info(`Enrollment ${enrollmentId} deleted successfully`);
-      res.json({ message: "Enrollment deleted successfully" });
+      res.json({ message: 'Enrollment deleted successfully' });
     } catch (error) {
-      logger.error("Error deleting enrollment: ", error);
-      res.status(500).json({ error: "Internal Server Error" });
+      logger.error('Error deleting enrollment: ', error);
+      res.status(500).json({ error: 'Internal Server Error' });
     }
   }
 }

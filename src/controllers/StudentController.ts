@@ -1,29 +1,29 @@
-import { Request, Response } from "express";
-import Student from "../models/Student";
-import log4js from "../../src/logger";
+import { Request, Response } from 'express';
+import Student from '../models/Student';
+import log4js from '../../src/logger';
 
-const logger = log4js.getLogger("file");
+const logger = log4js.getLogger('file');
 
 class StudentController {
   static async getAllStudents(req: Request, res: Response) {
     try {
       const { name, age, email } = req.query;
-      const filter: any = {};
-      if (name) {
+      const filter: { name?: string; age?: number; email?: string } = {};
+      if (typeof name === 'string') {
         filter.name = name;
       }
-      if (age) {
+      if (typeof age === 'number') {
         filter.age = age;
       }
-      if (email) {
+      if (typeof email === 'string') {
         filter.email = email;
       }
       const students = await Student.find(filter);
-      logger.info("Students were found");
+      logger.info('Students were found');
       res.json(students);
     } catch (error) {
-      logger.error("Error finding students: ", error);
-      res.status(500).json({ error: "Internal Server Error" });
+      logger.error('Error finding students: ', error);
+      res.status(500).json({ error: 'Internal Server Error' });
     }
   }
 
@@ -32,13 +32,13 @@ class StudentController {
     try {
       const student = await Student.findById(studentId);
       if (!student) {
-        return res.status(404).json({ message: "Student not found" });
+        return res.status(404).json({ message: 'Student not found' });
       }
       logger.info(`Student ${studentId} found`);
       res.json(student);
     } catch (error) {
-      logger.error("Error finding student by id: ", error);
-      res.status(500).json({ error: "Internal Server Error" });
+      logger.error('Error finding student by id: ', error);
+      res.status(500).json({ error: 'Internal Server Error' });
     }
   }
 
@@ -50,11 +50,11 @@ class StudentController {
         age,
         email,
       });
-      logger.info("Student created successfully");
+      logger.info('Student created successfully');
       res.json(newStudent);
     } catch (error) {
-      logger.error("Error creating student: ", error);
-      res.status(500).json({ error: "Internal Server Error" });
+      logger.error('Error creating student: ', error);
+      res.status(500).json({ error: 'Internal Server Error' });
     }
   }
 
@@ -68,13 +68,13 @@ class StudentController {
         { new: true }
       );
       if (!updateStudent) {
-        return res.status(404).json({ message: "Student not found" });
+        return res.status(404).json({ message: 'Student not found' });
       }
       logger.info(`Student ${studentId} updated successfully`);
       res.json(updateStudent);
     } catch (error) {
-      logger.error("Error updating student: ", error);
-      res.status(500).json({ error: "Internal Server Error" });
+      logger.error('Error updating student: ', error);
+      res.status(500).json({ error: 'Internal Server Error' });
     }
   }
 
@@ -83,13 +83,13 @@ class StudentController {
     try {
       const deletedStudent = await Student.findByIdAndDelete(studentId);
       if (!deletedStudent) {
-        return res.status(404).json({ message: "Student not found" });
+        return res.status(404).json({ message: 'Student not found' });
       }
       logger.info(`Student ${studentId} deleted successfully`);
-      res.json({ messsage: "Student deleted successfully" });
+      res.json({ messsage: 'Student deleted successfully' });
     } catch (error) {
-      logger.error("Error deleting student: ", error);
-      res.status(500).json({ error: "Internal Server Error" });
+      logger.error('Error deleting student: ', error);
+      res.status(500).json({ error: 'Internal Server Error' });
     }
   }
 }
