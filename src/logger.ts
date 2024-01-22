@@ -1,16 +1,16 @@
-import log4js from "log4js";
+import log4js, { Configuration } from 'log4js';
 
-const config: any = {
+const config: Configuration = {
   appenders: {
-    file: { type: "file", filename: "./logs/logs.log" },
-    console: { type: "console" },
+    file: { type: 'file', filename: './logs/logs.log' },
+    console: { type: 'console' },
   },
   categories: {
-    error: { appenders: ["file"], level: "error" },
-    default: { appenders: ["file"], level: "info" },
+    error: { appenders: ['file'], level: 'error' },
+    default: { appenders: ['file'], level: 'info' },
   },
-}
+};
 
-log4js.configure(config)
+log4js.configure(config);
 
-export default log4js
+export default log4js;
